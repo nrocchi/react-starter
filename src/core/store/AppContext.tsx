@@ -18,25 +18,37 @@ import _ from 'lodash'
 import {DataChart} from 'src/core/ui/charts/ChartTypes'
 import AppReducer from './AppReducer'
 import {AppState, AppContextValue, AppProviderProps} from './AppContextTypes'
+import {
+  SELECTED_PERIOD,
+  SELECTED_TYPE,
+  USERS_TABLE_COLUMNS,
+  USERS_TABLE_FILTERS,
+  USERS_TABLE_LIMIT,
+  USERS_TABLE_ORDER,
+  USERS_TABLE_ORDERBY,
+  USERS_TABLE_PAGE,
+  USERS_TABLE_QUERY,
+  USERS_TABLE_ROWSPERPAGE,
+  USERS_TABLE_SELECTED,
+  USERS_TABLE_TOGGLEVIEW,
+} from '../constants/Constants'
 
 const initialState: AppState = {
   users: {
-    filters: null,
-    limit: 10,
-    query: '',
-    order: 'desc',
-    orderBy: 'updated_at',
-    page: 0,
-    selected: [],
-    toggleView: 'table',
-    rowsPerPageOptions: [5, 10, 25, 50, 100],
+    columns: USERS_TABLE_COLUMNS,
+    filters: USERS_TABLE_FILTERS,
+    limit: USERS_TABLE_LIMIT,
+    query: USERS_TABLE_QUERY,
+    order: USERS_TABLE_ORDER,
+    orderBy: USERS_TABLE_ORDERBY,
+    page: USERS_TABLE_PAGE,
+    selected: USERS_TABLE_SELECTED,
+    toggleView: USERS_TABLE_TOGGLEVIEW,
+    rowsPerPageOptions: USERS_TABLE_ROWSPERPAGE,
   },
   selected: {
-    period: {
-      code: 'THISYEAR',
-      name: 'This year',
-    },
-    type: {id: 2, code: 'quantity', name: 'Quantity'},
+    period: SELECTED_PERIOD,
+    type: SELECTED_TYPE,
   },
 }
 
@@ -50,6 +62,7 @@ export const AppContext = createContext<AppContextValue>({
   handleReset: () => {},
   handleSelectAll: () => () => {},
   handleSelectOne: () => {},
+  handleColumns: () => () => {},
   handleSort: () => () => {},
   handleTabsChange: () => () => {},
   handleToggleView: () => {},
@@ -214,6 +227,52 @@ export const AppProvider = ({children}: AppProviderProps) => {
         payload: {
           selected: state[type].selected.filter(
             (item) => item.id !== selectedItem.id,
+          ),
+          type,
+        },
+      })
+    }
+  }
+
+  const handleColumns = (
+    hiddenItem:
+      | Array<Record<string, string | number>>
+      | Record<string, string | number>
+      | null,
+    type: string,
+  ): void => {
+    if (!hiddenItem) {
+      dispatch({
+        type: 'COLUMNS',
+        payload: {
+          columns: (state[type].columns = []),
+          type,
+        },
+      })
+    } else if (Array.isArray(hiddenItem)) {
+      dispatch({
+        type: 'COLUMNS',
+        payload: {
+          columns: (state[type].columns = hiddenItem),
+          type,
+        },
+      })
+    } else if (
+      !state[type].columns.find((item: any) => item.id === hiddenItem.id)
+    ) {
+      dispatch({
+        type: 'COLUMNS',
+        payload: {
+          columns: [...state[type].columns, hiddenItem],
+          type,
+        },
+      })
+    } else {
+      dispatch({
+        type: 'COLUMNS',
+        payload: {
+          columns: state[type].columns.filter(
+            (item) => item.id !== hiddenItem.id,
           ),
           type,
         },
@@ -473,6 +532,7 @@ export const AppProvider = ({children}: AppProviderProps) => {
     handleReset,
     handleSelectAll,
     handleSelectOne,
+    handleColumns,
     handleSort,
     handleTabsChange,
     handleToggleView,

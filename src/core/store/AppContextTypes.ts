@@ -1,18 +1,20 @@
 import {ChangeEvent, Dispatch, ReactNode, SyntheticEvent} from 'react'
 import {PeriodData} from 'src/api/periods/PeriodModel'
 import {Type} from 'src/api/type/TypeModel'
-import {UserStatsDataCharts} from 'src/api/users/UsersModel'
+import {UserData, UserStatsDataCharts} from 'src/api/users/UsersModel'
 import {DataChart} from 'src/core/ui/charts/ChartTypes'
+import {ButtonSelectOption} from '../ui/buttons/ButtonTypes'
 
 export interface AppStateTable {
-  filters: Record<string, string | null> | null
+  columns: Array<ButtonSelectOption>
+  filters: Record<keyof UserData, string | null>
   limit: number
   query: string
   order: 'asc' | 'desc'
   orderBy: string
   page: number
-  selected: Array<Record<string, string | number>>
-  toggleView: string | null
+  selected: Array<UserData>
+  toggleView: 'table' | 'grid' | null
   rowsPerPageOptions: Array<number>
 }
 
@@ -52,6 +54,10 @@ export interface AppContextValue extends AppState {
   handleSelectOne: (
     _event: ChangeEvent<HTMLInputElement>,
     selectedItem: Record<string, string | number>,
+    type: string,
+  ) => void
+  handleColumns: (
+    columns: Array<ButtonSelectOption> | ButtonSelectOption | null,
     type: string,
   ) => void
   handleSort: (property: any, type: string) => () => void
@@ -138,6 +144,14 @@ export type SelectAction = {
   }
 }
 
+export type ColumnsAction = {
+  type: 'COLUMNS'
+  payload: {
+    columns: Array<Record<string, string | number>>
+    type: string
+  }
+}
+
 export type SortAction = {
   type: 'SORT'
   payload: {
@@ -185,6 +199,7 @@ export type AppAction =
   | QueryAction
   | ResetAction
   | SelectAction
+  | ColumnsAction
   | SortAction
   | TabsAction
   | ToggleAction

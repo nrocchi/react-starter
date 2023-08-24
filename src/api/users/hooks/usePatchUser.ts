@@ -68,8 +68,6 @@ export default function usePatchUser() {
         delete updateWithoutProperties.updated_at
         delete updateWithoutProperties.status
 
-        console.log('updateWithoutProperties:', updateWithoutProperties)
-        console.log('updatedWithoutProperties:', updatedWithoutProperties)
         if (!_.isEqual(updatedWithoutProperties, updateWithoutProperties)) {
           enqueueSnackbar(
             currentUser.datas.id === data.datas.id

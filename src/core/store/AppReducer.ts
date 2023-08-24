@@ -6,6 +6,7 @@ import {
   PageAction,
   QueryAction,
   SelectAction,
+  ColumnsAction,
   ResetAction,
   SortAction,
   TabsAction,
@@ -64,6 +65,13 @@ const handlers: Record<
   SELECT: (state: AppState, action: SelectAction): AppState => {
     const {selected, type} = action.payload
     state[type].selected = selected
+
+    return {...state}
+  },
+
+  COLUMNS: (state: AppState, action: ColumnsAction): AppState => {
+    const {columns, type} = action.payload
+    state[type].columns = columns
 
     return {...state}
   },

@@ -10,7 +10,6 @@ const ButtonToggle = ({type, state}: {type: string; state: AppStateTable}) => {
   return (
     <ToggleButtonGroup
       value={state?.toggleView}
-      sx={{mb: 3}}
       exclusive
       onChange={(event, selected) => handleToggleView(event, selected, type)}>
       <ToggleButton disableRipple value="table">

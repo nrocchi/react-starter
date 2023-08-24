@@ -91,38 +91,46 @@ const UsersTableHead = () => {
             </Tooltip>
           ) : null}
         </TableCell>
-        <TableCell>
-          <TableSortLabel
-            active={users.orderBy === 'lastname'}
-            direction={users.orderBy === 'lastname' ? users.order : 'asc'}
-            onClick={handleSort('lastname', 'users')}>
-            {t('Name')}
-            {users.orderBy === 'lastname' ? (
-              <Box component="span" sx={visuallyHidden}>
-                {users.order === 'desc'
-                  ? 'sorted descending'
-                  : 'sorted ascending'}
-              </Box>
-            ) : null}
-          </TableSortLabel>
-        </TableCell>
-        <TableCell>
-          <TableSortLabel
-            active={users.orderBy === 'email'}
-            direction={users.orderBy === 'email' ? users.order : 'asc'}
-            onClick={handleSort('email', 'users')}>
-            {t('Email')}
-            {users.orderBy === 'email' ? (
-              <Box component="span" sx={visuallyHidden}>
-                {users.order === 'desc'
-                  ? 'sorted descending'
-                  : 'sorted ascending'}
-              </Box>
-            ) : null}
-          </TableSortLabel>
-        </TableCell>
-        <TableCell>{t('Role')}</TableCell>
-        <TableCell>{t('Status')}</TableCell>
+        {users.columns.find((item) => item.code === 'lastname') ? (
+          <TableCell>
+            <TableSortLabel
+              active={users.orderBy === 'lastname'}
+              direction={users.orderBy === 'lastname' ? users.order : 'asc'}
+              onClick={handleSort('lastname', 'users')}>
+              {t('Name')}
+              {users.orderBy === 'lastname' ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {users.order === 'desc'
+                    ? 'sorted descending'
+                    : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ) : null}
+        {users.columns.find((item) => item.code === 'email') ? (
+          <TableCell>
+            <TableSortLabel
+              active={users.orderBy === 'email'}
+              direction={users.orderBy === 'email' ? users.order : 'asc'}
+              onClick={handleSort('email', 'users')}>
+              {t('Email')}
+              {users.orderBy === 'email' ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {users.order === 'desc'
+                    ? 'sorted descending'
+                    : 'sorted ascending'}
+                </Box>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ) : null}
+        {users.columns.find((item) => item.code === 'role') ? (
+          <TableCell>{t('Role')}</TableCell>
+        ) : null}
+        {users.columns.find((item) => item.code === 'status') ? (
+          <TableCell>{t('Status')}</TableCell>
+        ) : null}
         <TableCell>{t('Actions')}</TableCell>
       </TableRow>
     </TableHead>

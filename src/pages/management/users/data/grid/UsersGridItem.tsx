@@ -80,8 +80,12 @@ const UsersCardItem = ({user}: UsersItemProps) => {
             display="flex"
             alignItems="flex-start"
             justifyContent="space-between">
-            {getTag(user.role.name)}
-            {getTag(user.status.name)}
+            {users.columns.find((item) => item.code === 'role')
+              ? getTag(user.role.name)
+              : null}
+            {users.columns.find((item) => item.code === 'status')
+              ? getTag(user.status.name)
+              : null}
           </Box>
           <Divider
             sx={{
@@ -89,35 +93,44 @@ const UsersCardItem = ({user}: UsersItemProps) => {
             }}
           />
           <Box p={2} display="flex" flexDirection="row" flex={1}>
-            <Avatar
-              sx={{
-                width: 50,
-                height: 50,
-                mr: 2,
-              }}
-              alt={`${user.firstname} ${user.lastname}`}
-              src={
-                user.avatar
-                  ? user.avatar.startsWith('https://')
-                    ? user.avatar
-                    : `${process.env.REACT_APP_API_URL}${user.avatar}`
-                  : user.firstname
-              }
-            />
+            {users.columns.find((item) => item.code === 'lastname') ? (
+              <Avatar
+                sx={{
+                  width: 50,
+                  height: 50,
+                  mr: 2,
+                }}
+                alt={`${user.firstname} ${user.lastname}`}
+                src={
+                  user.avatar
+                    ? user.avatar.startsWith('https://')
+                      ? user.avatar
+                      : `${process.env.REACT_APP_API_URL}${user.avatar}`
+                    : user.firstname
+                }
+              />
+            ) : null}
             <Box>
-              <Box display="flex" flexWrap="wrap">
-                <Link variant="h5" component={RouterLink} sx={{mr: 1}} to="#">
-                  {user.firstname}
-                </Link>
-                <Typography component="span" variant="body1" fontWeight="bold">
-                  ({user.lastname})
-                </Typography>
-              </Box>
-              <Box width={140}>
-                <Typography variant="body1" noWrap>
-                  {user.email}
-                </Typography>
-              </Box>
+              {users.columns.find((item) => item.code === 'lastname') ? (
+                <Box display="flex" flexWrap="wrap">
+                  <Link variant="h5" component={RouterLink} sx={{mr: 1}} to="#">
+                    {user.firstname}
+                  </Link>
+                  <Typography
+                    component="span"
+                    variant="body1"
+                    fontWeight="bold">
+                    ({user.lastname})
+                  </Typography>
+                </Box>
+              ) : null}
+              {users.columns.find((item) => item.code === 'email') ? (
+                <Box width={140}>
+                  <Typography variant="body1" noWrap>
+                    {user.email}
+                  </Typography>
+                </Box>
+              ) : null}
             </Box>
           </Box>
           <Divider />

@@ -3,6 +3,8 @@ import {useApp} from 'src/core/store/AppContext'
 import useGetUserRoles from 'src/api/users/hooks/useGetUserRoles'
 import ButtonToggle from 'src/core/ui/buttons/ButtonToggle'
 import useGetUsers from 'src/api/users/hooks/useGetUsers'
+import {USERS_TABLE_COLUMNS} from 'src/core/constants/Constants'
+import ButtonColumns from 'src/core/ui/buttons/ButtonColumns'
 import UsersTabs from './UsersTabs'
 
 const UsersMenu = () => {
@@ -57,6 +59,16 @@ const UsersMenu = () => {
             variant="rectangular"
             sx={{
               bgcolor: theme.colors.alpha.black[10],
+              width: 48,
+              height: 48,
+              borderRadius: theme.general.borderRadiusMd,
+              mr: 1,
+            }}
+          />
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              bgcolor: theme.colors.alpha.black[10],
               width: 95,
               height: 48,
               borderRadius: theme.general.borderRadiusMd,
@@ -64,7 +76,14 @@ const UsersMenu = () => {
           />
         </Box>
       ) : (
-        <ButtonToggle type="users" state={users} />
+        <Box display="flex" alignItems="center" mb={3}>
+          <ButtonColumns
+            datas={USERS_TABLE_COLUMNS}
+            state={users}
+            type="users"
+          />
+          <ButtonToggle type="users" state={users} />
+        </Box>
       )}
     </Box>
   )

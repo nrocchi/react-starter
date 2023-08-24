@@ -6,7 +6,6 @@ import {
   Box,
   Typography,
   Avatar,
-  useTheme,
   Link,
   Button,
   CircularProgress,
@@ -27,7 +26,6 @@ import UsersForm from 'src/pages/management/users/form/UsersForm'
 
 const UsersTableItem = ({user}: UsersItemProps) => {
   const {t} = useTranslation()
-  const theme = useTheme()
   const mutationDelete = useDeleteUser()
   const {users, handleSelectOne, getTag} = useApp()
   const [openEdit, setOpenEdit] = useState<boolean>(false)
@@ -55,39 +53,47 @@ const UsersTableItem = ({user}: UsersItemProps) => {
             />
           ) : null}
         </TableCell>
-        <TableCell>
-          <Box display="flex" alignItems="center">
-            <Avatar
-              sx={{
-                mr: 1,
-              }}
-              alt={`${user.firstname} ${user.lastname}`}
-              src={
-                user.avatar
-                  ? user.avatar.startsWith('https://')
-                    ? user.avatar
-                    : `${process.env.REACT_APP_API_URL}${user.avatar}`
-                  : user.firstname
-              }
-            />
-            <Box>
-              <Link
-                variant="body1"
-                fontWeight="bold"
-                component={RouterLink}
-                to="#">
-                {user.firstname} {user.lastname}
-              </Link>
+        {users.columns.find((item) => item.code === 'lastname') ? (
+          <TableCell>
+            <Box display="flex" alignItems="center">
+              <Avatar
+                sx={{
+                  mr: 1,
+                }}
+                alt={`${user.firstname} ${user.lastname}`}
+                src={
+                  user.avatar
+                    ? user.avatar.startsWith('https://')
+                      ? user.avatar
+                      : `${process.env.REACT_APP_API_URL}${user.avatar}`
+                    : user.firstname
+                }
+              />
+              <Box>
+                <Link
+                  variant="body1"
+                  fontWeight="bold"
+                  component={RouterLink}
+                  to="#">
+                  {user.firstname} {user.lastname}
+                </Link>
+              </Box>
             </Box>
-          </Box>
-        </TableCell>
-        <TableCell>
-          <Typography variant="body1" noWrap>
-            {user.email}
-          </Typography>
-        </TableCell>
-        <TableCell>{getTag(user.role.name)}</TableCell>
-        <TableCell>{getTag(user.status.name)}</TableCell>
+          </TableCell>
+        ) : null}
+        {users.columns.find((item) => item.code === 'email') ? (
+          <TableCell>
+            <Typography variant="body1" noWrap>
+              {user.email}
+            </Typography>
+          </TableCell>
+        ) : null}
+        {users.columns.find((item) => item.code === 'role') ? (
+          <TableCell>{getTag(user.role.name)}</TableCell>
+        ) : null}
+        {users.columns.find((item) => item.code === 'status') ? (
+          <TableCell>{getTag(user.status.name)}</TableCell>
+        ) : null}
         <TableCell>
           <Box display="flex">
             {currentUser?.datas.id === user?.id ||
