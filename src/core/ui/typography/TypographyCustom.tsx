@@ -5,7 +5,7 @@ import {parseISO} from 'date-fns'
 import {TypographyCustomProps} from './TypographyTypes'
 
 const TypographyCustom = ({
-  color = '',
+  color = null,
   component,
   fontWeight = 'bold',
   formatCurrency = 'currencyEUR',

@@ -2,7 +2,7 @@ import {ElementType} from 'react'
 import {BoxProps, SxProps, Theme, TypographyProps} from '@mui/material'
 
 export interface TypographyCustomProps {
-  color?: string
+  color?: string | null
   component?: ElementType
   fontWeight?: TypographyProps['fontWeight']
   formatCurrency?: string
