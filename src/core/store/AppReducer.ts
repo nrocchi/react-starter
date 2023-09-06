@@ -2,6 +2,7 @@ import {
   AppState,
   AppAction,
   FiltersAction,
+  FiltersArrayAction,
   LimitAction,
   PageAction,
   QueryAction,
@@ -21,6 +22,14 @@ const handlers: Record<
   FILTERS: (state: AppState, action: FiltersAction): AppState => {
     const {filters, page, type} = action.payload
     state[type].filters = filters
+    state[type].page = page
+
+    return {...state}
+  },
+
+  FILTERS_ARRAY: (state: AppState, action: FiltersArrayAction): AppState => {
+    const {type, key, items, page} = action.payload
+    state[type][key] = items
     state[type].page = page
 
     return {...state}

@@ -32,6 +32,11 @@ export interface AppContextValue extends AppState {
     filter: string,
     type: string,
   ) => (event: ChangeEvent<HTMLInputElement>) => void
+  handleFiltersArray: (
+    type: string,
+    key: string,
+    items: Array<FiltersArray>,
+  ) => void
   handleLimitChange: (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     total: number,
@@ -60,7 +65,7 @@ export interface AppContextValue extends AppState {
     columns: Array<ButtonSelectOption> | ButtonSelectOption | null,
     type: string,
   ) => void
-  handleSort: (property: any, type: string) => () => void
+  handleSort: (property: string, type: string) => () => void
   handleTabsChange: (
     filter: string,
     type: string,
@@ -88,12 +93,27 @@ export interface AppProviderProps {
   children: ReactNode
 }
 
+export interface FiltersArray {
+  id: string
+  value: string
+}
+
 export type FiltersAction = {
   type: 'FILTERS'
   payload: {
     filters: Record<string, string | null>
     page: number
     type: string
+  }
+}
+
+export type FiltersArrayAction = {
+  type: 'FILTERS_ARRAY'
+  payload: {
+    type: string
+    key: string
+    items: Array<FiltersArray>
+    page: number
   }
 }
 
@@ -194,6 +214,7 @@ export type SelectedAction = {
 
 export type AppAction =
   | FiltersAction
+  | FiltersArrayAction
   | LimitAction
   | PageAction
   | QueryAction

@@ -17,7 +17,12 @@ import {parseISO} from 'date-fns'
 import _ from 'lodash'
 import {DataChart} from 'src/core/ui/charts/ChartTypes'
 import AppReducer from './AppReducer'
-import {AppState, AppContextValue, AppProviderProps} from './AppContextTypes'
+import {
+  AppState,
+  AppContextValue,
+  AppProviderProps,
+  FiltersArray,
+} from './AppContextTypes'
 import {
   SELECTED_PERIOD,
   SELECTED_TYPE,
@@ -56,6 +61,7 @@ export const AppContext = createContext<AppContextValue>({
   ...initialState,
   dispatch: () => {},
   handleFilters: () => () => {},
+  handleFiltersArray: () => () => {},
   handleLimitChange: () => {},
   handlePageChange: () => {},
   handleQueryChange: () => {},
@@ -101,6 +107,22 @@ export const AppProvider = ({children}: AppProviderProps) => {
         },
       })
     }
+
+  const handleFiltersArray = (
+    type: string,
+    key: string,
+    items: Array<FiltersArray>,
+  ): void => {
+    dispatch({
+      type: 'FILTERS_ARRAY',
+      payload: {
+        items,
+        type,
+        key,
+        page: 0,
+      },
+    })
+  }
 
   const updateFilters = (
     filter: string,
@@ -526,6 +548,7 @@ export const AppProvider = ({children}: AppProviderProps) => {
     ...state,
     dispatch,
     handleFilters,
+    handleFiltersArray,
     handleLimitChange,
     handlePageChange,
     handleQueryChange,
