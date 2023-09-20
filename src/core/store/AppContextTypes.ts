@@ -39,6 +39,7 @@ export interface AppContextValue extends AppState {
   ) => void
   handleLimitChange: (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    page: number,
     total: number,
     type: string,
   ) => void

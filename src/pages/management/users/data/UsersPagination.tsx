@@ -23,7 +23,7 @@ const UsersPagination = () => {
         handlePageChange(event, newPage, 'users')
       }
       onRowsPerPageChange={(event) =>
-        handleLimitChange(event, data?.total, 'users')
+        handleLimitChange(event, users.page, data?.total, 'users')
       }
       page={users.page}
       rowsPerPage={users.limit}

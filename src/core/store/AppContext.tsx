@@ -163,10 +163,11 @@ export const AppProvider = ({children}: AppProviderProps) => {
 
   const handleLimitChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    page: number,
     total: number,
     type: string,
   ): void => {
-    if (parseInt(event.target.value, 10) > total) {
+    if (parseInt(event.target.value, 10) * page > total) {
       dispatch({
         type: 'PAGE',
         payload: {
